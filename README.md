@@ -76,7 +76,7 @@ Integrated `reportWebVitals.js` to track:
 ## 🚀 Deployment
 -----------------
 - **Platform**: Vercel
-- **Live URL**: [Your Deployed App URL]
+- **Live URL**: [SQL Query Viewer](https://sql-query-viewer-mu.vercel.app)
 
 ## 🛠 Local Setup
 -----------------
