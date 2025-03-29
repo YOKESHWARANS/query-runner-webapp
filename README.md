@@ -1,70 +1,134 @@
-# Getting Started with Create React App
+# 🚀 Frontend SQL Query Viewer
+----------------------------------------------
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📌 Project Overview (Atlan Frontend Internship Task 2025)
+-------------------------------------------------------------
+Atlan Frontend SQL Query Viewer is a powerful web-based application designed for data analysts and developers to explore, execute, and visualize SQL queries interactively. With an intuitive UI and advanced visualization features, it enhances data exploration and performance monitoring.
 
-## Available Scripts
+## 🛠 Tech Stack
+----------------
+- **Framework**: React (create-react-app)
+- **UI Library**: Material-UI (MUI)
+- **Charting**: Recharts
+- **Performance Tracking**: Web Vitals
+- **State Management**: React Hooks
+- **Storage**: Browser's localStorage for query history
 
-In the project directory, you can run:
+## 🌟 Key Features
+-------------------
+- 💻 **Custom SQL Query Input**: Write and execute queries with ease.
+- 💜 **Predefined Query Selection**: Quickly access common queries.
+- 📂 **Interactive Query History**: View and re-run previous queries.
+- 📊 **Advanced Data Visualization**: Graphs and charts using Recharts.
+- ⚡ **Performance Analysis**: Track web vitals for performance insights.
+- 📥 **CSV Export**: Export query results for further analysis.
+- ✨ **Syntax Highlighted Queries**: Improved readability for complex queries.
+- 📱 **Responsive Design**: Optimized for all screen sizes.
 
-### `npm start`
+## 🏠 System Architecture
+--------------------------
+The architecture of the Atlan Frontend SQL Query Viewer is designed to ensure smooth user interactions and efficient data visualization.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### **Architecture Diagram**
+![System Architecture](docs/system-architecture1.png)
+![System Architecture](docs/system-architecture2.png)---> For simple representation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- The system follows a component-based architecture using React.
+- The state management is handled using React Hooks.
+- The UI is built with Material-UI for better responsiveness.
+- Query results are stored in localStorage to improve performance.
+- Performance metrics are tracked using Web Vitals.
 
-### `npm test`
+## 📊 ER Diagram
+-----------------
+The **Entity-Relationship (ER) Diagram** below illustrates the structure of stored query data.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### **ER Diagram**
+![ER Diagram](docs/er-diagram.png)
+![ER Diagram](docs/er-diagram2.png)---> For simple representation
 
-### `npm run build`
+- Queries are stored in **localStorage**.
+- Each query includes:
+  - **Query ID** (Unique identifier)
+  - **Query String** (User input SQL query)
+  - **Timestamp** (Execution time)
+  - **Result Data** (Simulated output)
+- Predefined queries are also maintained for easy selection.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📊 Performance Metrics
+---------------------------
+### Page Load Time Measurement
+Integrated `reportWebVitals.js` to track:
+- **Cumulative Layout Shift (CLS)**
+- **First Input Delay (FID)**
+- **First Contentful Paint (FCP)**
+- **Largest Contentful Paint (LCP)**
+- **Time to First Byte (TTFB)**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Optimization Techniques
+---------------------------
+1. **Code Splitting**: Used `React.lazy()` for component-level code splitting.
+2. **Caching**: Implemented localStorage for efficient query history retrieval.
+3. **Minimal Re-renders**: Leveraged `useMemo` and `useCallback` to optimize performance.
+4. **Lazy Loading**: Decreased initial load time by deferring heavy components.
+5. **Responsive UI**: Built with Material-UI's grid system for a seamless experience.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🚀 Deployment
+-----------------
+- **Platform**: Vercel
+- **Live URL**: [Your Deployed App URL]
 
-### `npm run eject`
+## 🛠 Local Setup
+-----------------
+### Prerequisites
+- Node.js (v14 or later)
+- npm or yarn
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Installation Steps
+1. Clone the repository:
+   ```bash
+   git clone [your-repo-url]
+   cd [project-directory]
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🖍 Dependencies
+- `react`: ^18.0.0
+- `@mui/material`: ^5.x
+- `@mui/icons-material`: ^5.x
+- `recharts`: ^2.x
+- `web-vitals`: ^2.x
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🤍 Testing
+- Integrated error boundary handling.
+- Performance monitoring with Web Vitals.
+- Responsive design tested across multiple devices.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🔍 Browser Compatibility
+👉 Chrome  
+👉 Firefox  
+👉 Safari  
+👉 Edge  
 
-## Learn More
+## 📞 Contact
+--------------
+**YOKESHWARAN S**  
+📧 wsyokesh@gmail.com  
+🔗 [LinkedIn](https://linkedin.com/in/yokeshwaran-s-38893825b/)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### **Note to Atlan Team**
+---------------------------
+This project demonstrates a strong understanding of frontend development, emphasizing user experience, performance optimization, and data visualization capabilities.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
