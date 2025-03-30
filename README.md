@@ -25,7 +25,7 @@ SQL Query Viewer is a powerful web-based application designed for data analysts 
 ## 📜 Features
 
 ✅ Execute Predefined & Custom SQL Queries  
-✅ Interactive Data Visualization (Bar, Line, Pie, Scatter Charts)  
+✅ Interactive Data Visualization (Bar, Line, Pie,Area and Scatter Charts)  
 ✅ Query Performance Tracking  
 ✅ Query History & CSV Export  
 ✅ Theme Switching (Dark/Light Mode)  
@@ -40,7 +40,7 @@ SQL Query Viewer is a powerful web-based application designed for data analysts 
                                 [View Diagram](docs/system-architecture2.png) 
 - **🗂️ ER Diagram:** [View ER Diagram](docs/er-diagram.png) 
                       [View ER Diagram](docs/er-diagram2.png)
-- **📄 Technical Walkthrough PDF:** [Download PDF](https://drive.google.com/file/d/1ptJuaywqtvJx6baaYiCI-3MhiAYNfz4O/view?usp=sharing)  
+- **📄 Technical Walkthrough PDF:** [Download PDF](https://drive.google.com/file/d/12fPWgMcEdlLF-rkq8YGWopol2-0QXRaj/view?usp=sharing)  
 - **🎥 Video Walkthrough:** [Watch Video](your-video-link)  
 
 ---

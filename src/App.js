@@ -142,7 +142,7 @@ function App() {
                     fontSize: { xs: '1.1rem', sm: '1.25rem' }
                   }}
                 >
-                  Atlan SQL Query Viewer
+                  SQL Playground
                 </Typography>
                 <IconButton
                   onClick={toggleColorMode}

@@ -9,7 +9,10 @@ import {
   Grid,
   Divider,
   Collapse,
-  IconButton
+  IconButton,
+  Paper,
+  useTheme,
+  alpha
 } from '@mui/material';
 import SpeedIcon from '@mui/icons-material/Speed';
 import MemoryIcon from '@mui/icons-material/Memory';
@@ -18,6 +21,8 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 function AdvancedPerformanceTracker({ queryData }) {
   const [loadTime, setLoadTime] = useState(0);
@@ -29,28 +34,29 @@ function AdvancedPerformanceTracker({ queryData }) {
   const [dataSize, setDataSize] = useState(0);
   const [memoryUsage, setMemoryUsage] = useState(0);
   const [expanded, setExpanded] = useState(false);
+  const theme = useTheme();
+  
+  const isDarkMode = theme.palette.mode === 'dark';
 
   useEffect(() => {
     if (queryData && queryData.data) {
-      // Set execution time from the query if available
-      if (queryData.executionTime) {
-        setLoadTime(queryData.executionTime);
-      } else {
-        // Comprehensive performance tracking
-        const startTime = performance.now();
-        
-        const processingSteps = [
-          () => JSON.parse(JSON.stringify(queryData.data)),
-          () => queryData.data.map(item => ({ ...item })),
-          () => queryData.data.filter(Boolean)
-        ];
-
-        processingSteps.forEach(step => step());
-
-        const endTime = performance.now();
-        const totalLoadTime = Math.round(endTime - startTime);
-        setLoadTime(totalLoadTime);
-      }
+      // Always calculate a local processing time, even if queryData.executionTime exists
+      const startTime = performance.now();
+      
+      // Process the data
+      const processingSteps = [
+        () => JSON.parse(JSON.stringify(queryData.data)),
+        () => queryData.data.map(item => ({ ...item })),
+        () => queryData.data.filter(Boolean)
+      ];
+      processingSteps.forEach(step => step());
+      
+      const endTime = performance.now();
+      const processingTime = Math.round(endTime - startTime);
+      
+      // If no execution time is provided, use the processing time as a fallback
+      const reportedExecutionTime = queryData.executionTime || 0;
+      setLoadTime(reportedExecutionTime > 0 ? reportedExecutionTime : processingTime);
 
       // Data size calculation
       const dataString = JSON.stringify(queryData.data);
@@ -111,10 +117,30 @@ function AdvancedPerformanceTracker({ queryData }) {
     return 'error';
   };
 
+  // Function to format bytes into KB, MB
+  const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  };
+
   if (!queryData) return null;
 
   return (
-    <Card sx={{ mt: 2 }}>
+    <Card 
+      elevation={3}
+      sx={{ 
+        mt: 2, 
+        borderRadius: 2,
+        backgroundImage: isDarkMode ? 
+          `linear-gradient(${alpha(theme.palette.primary.dark, 0.05)}, ${alpha(theme.palette.background.paper, 1)})` : 
+          'none',
+        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+      }}
+    >
       <CardContent>
         <Box sx={{ 
           display: 'flex', 
@@ -123,104 +149,264 @@ function AdvancedPerformanceTracker({ queryData }) {
           mb: 2 
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <QueryStatsIcon sx={{ mr: 1 }} />
-            <Typography variant="h6">
+            <QueryStatsIcon 
+              sx={{ 
+                mr: 1.5, 
+                color: theme.palette.primary.main,
+                fontSize: 28
+              }} 
+            />
+            <Typography variant="h6" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
               Performance Analysis
             </Typography>
           </Box>
-          <IconButton onClick={() => setExpanded(!expanded)} aria-label="Toggle performance details">
+          <IconButton 
+            onClick={() => setExpanded(!expanded)} 
+            aria-label="Toggle performance details"
+            sx={{ 
+              bgcolor: expanded ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
+              '&:hover': {
+                bgcolor: alpha(theme.palette.primary.main, 0.2)
+              }
+            }}
+          >
             {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-          <AccessTimeFilledIcon color={getLoadTimeColor(loadTime)} />
-          <Tooltip title="Time taken to execute the query">
-            <Typography>Query Execution Time:</Typography>
-          </Tooltip>
-          <LinearProgress 
-            variant="determinate" 
-            value={Math.min((loadTime / 500) * 100, 100)} 
-            sx={{ flexGrow: 1 }} 
-            color={getLoadTimeColor(loadTime)}
-          />
-          <Typography>{loadTime} ms</Typography>
-        </Box>
+        <Paper 
+          elevation={1} 
+          sx={{ 
+            p: 2, 
+            mb: 2, 
+            borderRadius: 1, 
+            bgcolor: alpha(theme.palette.background.paper, 0.8),
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+            <AccessTimeFilledIcon color={getLoadTimeColor(loadTime)} />
+            <Tooltip title="Time taken to execute the query">
+              <Typography sx={{ fontWeight: 500, color: theme.palette.text.primary, minWidth: 160 }}>
+                Query Execution:
+              </Typography>
+            </Tooltip>
+            <LinearProgress 
+              variant="determinate" 
+              value={Math.min((loadTime / 500) * 100, 100)} 
+              sx={{ 
+                flexGrow: 1,
+                height: 10,
+                borderRadius: 5,
+                backgroundColor: alpha(theme.palette.divider, 0.2)
+              }} 
+              color={getLoadTimeColor(loadTime)}
+            />
+            <Typography 
+              sx={{ 
+                fontWeight: 600, 
+                color: theme.palette.getContrastText(theme.palette.background.paper),
+                bgcolor: theme.palette[getLoadTimeColor(loadTime)].main,
+                px: 1.5,
+                py: 0.5,
+                borderRadius: 1,
+                minWidth: 70,
+                textAlign: 'center'
+              }}
+            >
+              {loadTime} ms
+            </Typography>
+          </Box>
+        </Paper>
 
         <Collapse in={expanded}>
           <Divider sx={{ my: 2 }} />
           
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <SpeedIcon />
-                <Tooltip title="Time taken to render the results">
-                  <Typography>Render Time:</Typography>
-                </Tooltip>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={Math.min((renderMetrics.renderTime / 200) * 100, 100)} 
-                  sx={{ flexGrow: 1 }} 
-                  color={renderMetrics.renderTime > 100 ? 'warning' : 'primary'}
-                />
-                <Typography>{renderMetrics.renderTime} ms</Typography>
-              </Box>
+              <Paper 
+                elevation={1} 
+                sx={{ 
+                  p: 2, 
+                  borderRadius: 1, 
+                  height: '100%',
+                  bgcolor: alpha(theme.palette.background.paper, 0.8),
+                  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600, color: theme.palette.text.primary }}>
+                  <ShowChartIcon sx={{ mr: 1, verticalAlign: 'bottom' }} />
+                  Performance Metrics
+                </Typography>
+                
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                  <SpeedIcon color="info" />
+                  <Tooltip title="Time taken to render the results">
+                    <Typography sx={{ fontWeight: 500, color: theme.palette.text.primary, minWidth: 120 }}>
+                      Render Time:
+                    </Typography>
+                  </Tooltip>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={Math.min((renderMetrics.renderTime / 200) * 100, 100)} 
+                    sx={{ 
+                      flexGrow: 1,
+                      height: 8,
+                      borderRadius: 4,
+                      backgroundColor: alpha(theme.palette.divider, 0.2)
+                    }} 
+                    color={renderMetrics.renderTime > 100 ? 'warning' : 'info'}
+                  />
+                  <Typography sx={{ fontWeight: 500, color: theme.palette.text.secondary }}>
+                    {renderMetrics.renderTime} ms
+                  </Typography>
+                </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
-                <MemoryIcon />
-                <Tooltip title="Estimated memory consumption">
-                  <Typography>Memory Usage:</Typography>
-                </Tooltip>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={Math.min((memoryUsage / 100) * 100, 100)} 
-                  sx={{ flexGrow: 1 }} 
-                  color="secondary" 
-                />
-                <Typography>{memoryUsage.toFixed(2)} KB</Typography>
-              </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                  <MemoryIcon color="secondary" />
+                  <Tooltip title="Estimated memory consumption">
+                    <Typography sx={{ fontWeight: 500, color: theme.palette.text.primary, minWidth: 120 }}>
+                      Memory Usage:
+                    </Typography>
+                  </Tooltip>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={Math.min((memoryUsage / 100) * 100, 100)} 
+                    sx={{ 
+                      flexGrow: 1,
+                      height: 8,
+                      borderRadius: 4,
+                      backgroundColor: alpha(theme.palette.divider, 0.2)
+                    }} 
+                    color="secondary" 
+                  />
+                  <Typography sx={{ fontWeight: 500, color: theme.palette.text.secondary }}>
+                    {memoryUsage.toFixed(2)} KB
+                  </Typography>
+                </Box>
+              </Paper>
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                <Tooltip title="Size of processed data">
-                  <Typography variant="body2" color="text.secondary">
-                    <StorageIcon sx={{ verticalAlign: 'middle', mr: 1 }} />
-                    Data Size: {dataSize} bytes
+              <Paper 
+                elevation={1} 
+                sx={{ 
+                  p: 2, 
+                  borderRadius: 1, 
+                  height: '100%',
+                  bgcolor: alpha(theme.palette.background.paper, 0.8),
+                  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                }}
+              >
+                <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 600, color: theme.palette.text.primary }}>
+                  <StorageIcon sx={{ mr: 1, verticalAlign: 'bottom' }} />
+                  Data Statistics
+                </Typography>
+                
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                      Data Size
+                    </Typography>
+                    <Typography variant="h6" color="text.primary" sx={{ fontWeight: 600 }}>
+                      {formatBytes(dataSize)}
+                    </Typography>
+                  </Box>
+                  
+                  <Box>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                      Row Count
+                    </Typography>
+                    <Typography variant="h6" color="text.primary" sx={{ fontWeight: 600 }}>
+                      {queryData.data.length.toLocaleString()}
+                    </Typography>
+                  </Box>
+                  
+                  <Box>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                      Avg. Row Size
+                    </Typography>
+                    <Typography variant="h6" color="text.primary" sx={{ fontWeight: 600 }}>
+                      {queryData.data.length ? formatBytes(dataSize / queryData.data.length) : '0 B'}
+                    </Typography>
+                  </Box>
+                </Box>
+                
+                {/* Display query text with guaranteed readability in dark mode */}
+                <Box mt={1}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                    Query Preview
                   </Typography>
-                </Tooltip>
-                <Tooltip title="Number of rows in result">
-                  <Typography variant="body2" color="text.secondary">
-                    Rows: {queryData.data.length}
-                  </Typography>
-                </Tooltip>
-              </Box>
+                  <Paper 
+                    sx={{ 
+                      p: 1.5, 
+                      borderRadius: 1.5, 
+                      maxHeight: 80, 
+                      overflow: 'auto',
+                      backgroundColor: isDarkMode ? alpha(theme.palette.background.default, 0.7) : alpha(theme.palette.background.paper, 0.7),
+                      border: `1px solid ${alpha(theme.palette.divider, 0.2)}`,
+                      color: theme.palette.text.primary,
+                    }}
+                  >
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        fontFamily: 'monospace', 
+                        whiteSpace: 'pre-wrap',
+                        color: isDarkMode ? theme.palette.primary.light : theme.palette.primary.dark
+                      }}
+                    >
+                      {queryData.query ? (queryData.query.length > 120 ? 
+                        queryData.query.substring(0, 120) + '...' : 
+                        queryData.query) : 'No query available'}
+                    </Typography>
+                  </Paper>
+                </Box>
+              </Paper>
             </Grid>
           </Grid>
 
           {performanceInsights.length > 0 && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="subtitle2" color="warning.main">
-                Performance Insights:
-              </Typography>
+            <Paper 
+              elevation={1} 
+              sx={{ 
+                p: 2, 
+                mt: 2, 
+                borderRadius: 1,
+                bgcolor: alpha(theme.palette.warning.light, isDarkMode ? 0.15 : 0.1),
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`
+              }}
+            >
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <WarningAmberIcon color="warning" sx={{ mr: 1 }} />
+                <Typography variant="subtitle1" color={theme.palette.warning.main} sx={{ fontWeight: 600 }}>
+                  Performance Insights
+                </Typography>
+              </Box>
+              
               {performanceInsights.map((insight, index) => (
-                <Box key={index} sx={{ mt: 1 }}>
+                <Box key={index} sx={{ mt: 1, pl: 4 }}>
                   <Typography 
                     variant="body2" 
                     color={
                       insight.severity === 'warning' 
-                        ? 'warning.main' 
-                        : 'text.secondary'
+                        ? theme.palette.warning.main
+                        : theme.palette.text.secondary
                     }
+                    sx={{ fontWeight: 500 }}
                   >
                     • {insight.message}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ pl: 2, display: 'block' }}>
+                  <Typography 
+                    variant="caption" 
+                    color={theme.palette.text.secondary} 
+                    sx={{ pl: 2, display: 'block' }}
+                  >
                     Recommendation: {insight.recommendation}
                   </Typography>
                 </Box>
               ))}
-            </Box>
+            </Paper>
           )}
         </Collapse>
       </CardContent>

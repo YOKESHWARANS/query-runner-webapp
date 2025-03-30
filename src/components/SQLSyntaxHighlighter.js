@@ -1,58 +1,135 @@
-import React from 'react';
-import { Typography } from '@mui/material';
+import React, { useMemo } from 'react';
+
+// Moved keywords outside the component to prevent unnecessary re-renders
+const KEYWORDS = [
+  'SELECT', 'FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'LIMIT', 
+  'JOIN', 'INNER', 'LEFT', 'RIGHT', 'OUTER', 'AND', 'OR', 'NOT',
+  'HAVING', 'UNION', 'ALL', 'INSERT', 'UPDATE', 'DELETE', 'CREATE',
+  'ALTER', 'DROP', 'TABLE', 'VIEW', 'INDEX', 'DISTINCT', 'AS',
+  'ON', 'BETWEEN', 'IN', 'IS', 'NULL', 'COUNT', 'SUM', 'AVG', 'MIN', 'MAX'
+];
 
 const SQLSyntaxHighlighter = ({ query }) => {
-  // SQL keywords to highlight
-  const keywords = [
-    'SELECT', 'FROM', 'WHERE', 'GROUP BY', 'ORDER BY', 'LIMIT', 
-    'JOIN', 'INNER', 'LEFT', 'RIGHT', 'OUTER', 'AND', 'OR', 'NOT'
-  ];
+  // Use useMemo to prevent unnecessary re-rendering
+  const highlightedContent = useMemo(() => {
+    if (!query || typeof query !== 'string') {
+      return '';
+    }
 
-  // Highlight function
-  const highlightQuery = (query) => {
-    let highlightedQuery = query;
+    let result = query;
 
-    // Highlight keywords
-    keywords.forEach(keyword => {
+    // Highlight keywords with word boundary check
+    KEYWORDS.forEach(keyword => {
       const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-      highlightedQuery = highlightedQuery.replace(
+      result = result.replace(
         regex, 
-        `<span style="color: #007bff; font-weight: bold;">${keyword}</span>`
+        match => `<span class="keyword">${match}</span>`
       );
     });
 
-    // Highlight strings
-    highlightedQuery = highlightedQuery.replace(
-      /('([^']*)')/g, 
-      '<span style="color: #28a745;">$1</span>'
+    // Highlight strings (both single and double quotes)
+    result = result.replace(
+      /('([^']*)'|"([^"]*)")/g, 
+      match => `<span class="string">${match}</span>`
     );
 
     // Highlight numbers
-    highlightedQuery = highlightedQuery.replace(
+    result = result.replace(
       /\b(\d+)\b/g, 
-      '<span style="color: #dc3545;">$1</span>'
+      match => `<span class="number">${match}</span>`
     );
 
-    return highlightedQuery;
-  };
+    // Highlight comments
+    result = result.replace(
+      /(--.*$|\/\*[\s\S]*?\*\/)/gm,
+      match => `<span class="comment">${match}</span>`
+    );
+
+    // Highlight functions
+    result = result.replace(
+      /\b(\w+)\(/g,
+      match => `<span class="function">${match}</span>`
+    );
+
+    return result;
+  }, [query]);
+
+  // Default message when no query is provided
+  const displayContent = query ? highlightedContent : 'Enter SQL query to highlight';
 
   return (
-    <Typography 
-      component="pre" 
-      sx={{ 
-        backgroundColor: '#f4f4f4', 
-        padding: 2, 
-        borderRadius: 2, 
-        overflowX: 'auto',
-        fontFamily: 'monospace',
-        whiteSpace: 'pre-wrap',
-        wordBreak: 'break-all'
-      }}
-      dangerouslySetInnerHTML={{ 
-        __html: highlightQuery(query) 
-      }}
-    />
+    <div className="sql-highlighter-container">
+      <pre 
+        className="sql-code" 
+        dangerouslySetInnerHTML={{ __html: displayContent }}
+      />
+      <style jsx>{`
+        .sql-highlighter-container {
+          position: relative;
+          width: 100%;
+          border-radius: 0.5rem;
+          overflow: hidden;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .sql-code {
+          background-color: #1e1e1e;
+          color: #d4d4d4;
+          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+          font-size: 0.875rem;
+          line-height: 1.5;
+          padding: 1rem;
+          margin: 0;
+          white-space: pre-wrap;
+          word-break: break-word;
+          overflow-x: auto;
+          min-height: 3rem;
+        }
+        :global(.keyword) {
+          color: #569cd6;
+          font-weight: bold;
+        }
+        :global(.string) {
+          color: #ce9178;
+        }
+        :global(.number) {
+          color: #b5cea8;
+        }
+        :global(.comment) {
+          color: #6a9955;
+          font-style: italic;
+        }
+        :global(.function) {
+          color: #dcdcaa;
+        }
+        @media (prefers-color-scheme: light) {
+          .sql-code {
+            background-color: #f5f5f5;
+            color: #333;
+          }
+          :global(.keyword) {
+            color: #0000ff;
+          }
+          :global(.string) {
+            color: #a31515;
+          }
+          :global(.number) {
+            color: #098658;
+          }
+          :global(.comment) {
+            color: #008000;
+          }
+          :global(.function) {
+            color: #795e26;
+          }
+        }
+      `}</style>
+    </div>
   );
+};
+
+// Set default props
+SQLSyntaxHighlighter.defaultProps = {
+  query: ''
 };
 
 export default SQLSyntaxHighlighter;
