@@ -6,7 +6,9 @@ import {
   Tooltip,
   Typography,
   Collapse,
-  Alert
+  Alert,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
@@ -17,6 +19,8 @@ function CustomQueryInput({ onRunCustomQuery }) {
   const [showHelp, setShowHelp] = useState(false);
   const [validationError, setValidationError] = useState(null);
   const textFieldRef = useRef(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const exampleQueries = [
     'SELECT customer_name, total_purchases FROM customers ORDER BY total_purchases DESC LIMIT 5',
@@ -96,55 +100,107 @@ function CustomQueryInput({ onRunCustomQuery }) {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-        <TextField
-          inputRef={textFieldRef}
-          fullWidth
-          variant="outlined"
-          label="Enter Custom SQL Query"
-          value={customQuery}
-          onChange={(e) => {
-            setCustomQuery(e.target.value);
-            setValidationError(null);
-          }}
-          placeholder="e.g., SELECT * FROM users WHERE active = true"
-          multiline
-          maxRows={4}
-          error={!!validationError}
-          helperText={validationError}
-        />
-        <Tooltip title="Paste Example Query">
-          <Button
+      {isMobile ? (
+        // Mobile layout - vertical stacking
+        <>
+          <TextField
+            inputRef={textFieldRef}
+            fullWidth
             variant="outlined"
-            color="secondary"
-            onClick={handlePasteExample}
-            sx={{ height: '56px' }}
-          >
-            <ContentPasteGoIcon />
-          </Button>
-        </Tooltip>
-        <Tooltip title="Run Custom Query">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleRunQuery}
-            startIcon={<CodeIcon />}
-            sx={{ height: '56px' }}
-          >
-            Run
-          </Button>
-        </Tooltip>
-        <Tooltip title="Show Query Help">
-          <Button
-            variant="text"
-            color="info"
-            onClick={() => setShowHelp(!showHelp)}
-            sx={{ height: '56px' }}
-          >
-            <HelpOutlineIcon />
-          </Button>
-        </Tooltip>
-      </Box>
+            label="Enter Custom SQL Query"
+            value={customQuery}
+            onChange={(e) => {
+              setCustomQuery(e.target.value);
+              setValidationError(null);
+            }}
+            placeholder="e.g., SELECT * FROM users WHERE active = true"
+            multiline
+            maxRows={4}
+            error={!!validationError}
+            helperText={validationError}
+            sx={{ mb: 1 }}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handlePasteExample}
+              size="small"
+              startIcon={<ContentPasteGoIcon />}
+            >
+              Example
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleRunQuery}
+              size="small"
+              startIcon={<CodeIcon />}
+            >
+              Run
+            </Button>
+            <Button
+              variant="text"
+              color="info"
+              onClick={() => setShowHelp(!showHelp)}
+              size="small"
+            >
+              <HelpOutlineIcon />
+            </Button>
+          </Box>
+        </>
+      ) : (
+        // Desktop layout - horizontal alignment
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+          <TextField
+            inputRef={textFieldRef}
+            fullWidth
+            variant="outlined"
+            label="Enter Custom SQL Query"
+            value={customQuery}
+            onChange={(e) => {
+              setCustomQuery(e.target.value);
+              setValidationError(null);
+            }}
+            placeholder="e.g., SELECT * FROM users WHERE active = true"
+            multiline
+            maxRows={4}
+            error={!!validationError}
+            helperText={validationError}
+          />
+          <Tooltip title="Paste Example Query">
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handlePasteExample}
+              sx={{ height: '56px' }}
+            >
+              <ContentPasteGoIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Run Custom Query">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleRunQuery}
+              startIcon={<CodeIcon />}
+              sx={{ height: '56px' }}
+            >
+              Run
+            </Button>
+          </Tooltip>
+          <Tooltip title="Show Query Help">
+            <Button
+              variant="text"
+              color="info"
+              onClick={() => setShowHelp(!showHelp)}
+              sx={{ height: '56px' }}
+            >
+              <HelpOutlineIcon />
+            </Button>
+          </Tooltip>
+        </Box>
+      )}
 
       <Collapse in={showHelp}>
         <Alert severity="info" sx={{ mb: 2 }}>

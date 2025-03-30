@@ -8,10 +8,15 @@ import {
   TableRow, 
   Paper, 
   Typography, 
-  Box 
+  Box,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 
 function ResultsTable({ queryData }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
   if (!queryData) return null;
 
   const columns = queryData.data.length > 0 ? Object.keys(queryData.data[0]) : [];
@@ -19,14 +24,20 @@ function ResultsTable({ queryData }) {
   return (
     <Box sx={{ mt: 2 }}>
       <Typography variant="h6" gutterBottom>
-        Query: {queryData.query}
+        {isMobile ? 'Results' : `Query: ${queryData.query}`}
       </Typography>
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer 
+        component={Paper} 
+        sx={{ 
+          maxWidth: '100%', 
+          overflowX: 'auto' 
+        }}
+      >
+        <Table size={isMobile ? "small" : "medium"}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column}>
+                <TableCell key={column} sx={{ whiteSpace: 'nowrap', px: isMobile ? 1 : 2 }}>
                   {column.replace(/_/g, ' ').toUpperCase()}
                 </TableCell>
               ))}
@@ -36,7 +47,7 @@ function ResultsTable({ queryData }) {
             {queryData.data.map((row, index) => (
               <TableRow key={index}>
                 {columns.map((column) => (
-                  <TableCell key={column}>
+                  <TableCell key={column} sx={{ px: isMobile ? 1 : 2 }}>
                     {row[column]}
                   </TableCell>
                 ))}

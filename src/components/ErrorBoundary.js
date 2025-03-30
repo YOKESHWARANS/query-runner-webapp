@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   Typography, 
   Paper, 
-  Box  // We'll use Box to wrap the content
+  Box  
 } from '@mui/material';
 
 class ErrorBoundary extends React.Component {

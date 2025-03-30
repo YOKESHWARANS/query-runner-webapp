@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useCallback, useMemo } from 'react';
 import { 
   Container, 
   Typography, 
@@ -13,8 +13,15 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  IconButton,
+  AppBar,
+  Toolbar,
+  CssBaseline,
+  useMediaQuery
 } from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { queryData } from './data/mockData';
 import QuerySelector from './components/QuerySelector';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -26,22 +33,43 @@ const PerformanceTracker = lazy(() => import('./components/PerformanceTracker'))
 const DataVisualization = lazy(() => import('./components/DataVisualization'));
 const SQLSyntaxHighlighter = lazy(() => import('./components/SQLSyntaxHighlighter'));
 
-const theme = createTheme({
-  palette: {
-    mode: 'light', 
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-  typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
-  },
-});
-
 function App() {
+  // Theme state
+  const [mode, setMode] = useState(() => {
+    const savedMode = localStorage.getItem('themeMode');
+    return savedMode || 'light';
+  });
+
+  // Theme toggle function
+  const toggleColorMode = () => {
+    setMode((prevMode) => {
+      const newMode = prevMode === 'light' ? 'dark' : 'light';
+      localStorage.setItem('themeMode', newMode);
+      return newMode;
+    });
+  };
+
+  // Create theme based on current mode
+  const theme = useMemo(() => 
+    createTheme({
+      palette: {
+        mode,
+        primary: {
+          main: mode === 'light' ? '#1976d2' : '#90caf9',
+        },
+        secondary: {
+          main: mode === 'light' ? '#dc004e' : '#f48fb1',
+        },
+      },
+      typography: {
+        fontFamily: 'Roboto, Arial, sans-serif',
+      },
+    }),
+    [mode]
+  );
+  
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [selectedQuery, setSelectedQuery] = useState(null);
   const [error, setError] = useState(null);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -100,27 +128,44 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <ErrorBoundary>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ px: { xs: 1, sm: 2, md: 3 } }}>
           <Box sx={{ my: 4 }}>
-            <Typography 
-              variant="h4" 
-              component="h1" 
-              gutterBottom 
-              align="center"
-            >
-              Atlan SQL Query Viewer
-            </Typography>
+            <AppBar position="static" sx={{ mb: 3, borderRadius: 1 }}>
+              <Toolbar sx={{ flexWrap: 'wrap' }}>
+                <Typography 
+                  variant="h6" 
+                  component="h1" 
+                  sx={{ 
+                    flexGrow: 1,
+                    fontSize: { xs: '1.1rem', sm: '1.25rem' }
+                  }}
+                >
+                  Atlan SQL Query Viewer
+                </Typography>
+                <IconButton
+                  onClick={toggleColorMode}
+                  color="inherit"
+                  aria-label="toggle dark/light mode"
+                  edge="end"
+                >
+                  {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                </IconButton>
+              </Toolbar>
+            </AppBar>
             
-            <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3 }, mt: 2 }}>
               <Suspense fallback={<div>Loading...</div>}>
                 <CustomQueryInput onRunCustomQuery={handleCustomQuery} />
                 
                 <Box 
                   sx={{ 
                     display: 'flex', 
+                    flexDirection: { xs: 'column', sm: 'row' }, 
                     justifyContent: 'space-between', 
-                    alignItems: 'center', 
+                    alignItems: { xs: 'stretch', sm: 'center' }, 
+                    gap: 2,
                     mb: 2 
                   }}
                 >
@@ -129,11 +174,12 @@ function App() {
                     selectedQuery={selectedQuery}
                     onQueryChange={handleQueryChange}
                   />
-                  <Box sx={{ display: 'flex', gap: 2 }}>
+                  <Box sx={{ display: 'flex', gap: 2, justifyContent: { xs: 'space-between', sm: 'flex-end' } }}>
                     <Button 
                       variant="outlined" 
                       color="secondary" 
                       onClick={clearHistory}
+                      size={isMobile ? "small" : "medium"}
                     >
                       Clear History
                     </Button>
@@ -142,6 +188,7 @@ function App() {
                         variant="contained" 
                         color="primary" 
                         onClick={() => setIsExportModalOpen(true)}
+                        size={isMobile ? "small" : "medium"}
                       >
                         Export CSV
                       </Button>
