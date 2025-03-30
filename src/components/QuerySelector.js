@@ -24,8 +24,6 @@ function QuerySelector({ queries = [], selectedQuery, onQueryChange }) {
   const handleQueryChange = (e) => {
     const selected = uniqueQueries.find(q => q.id === e.target.value);
     
-    // If we're selecting a previously run query, use its stored execution time
-    // If there's no execution time, simulate one for consistency with new queries
     if (selected && !selected.executionTime) {
       selected.executionTime = Math.floor(Math.random() * 200 + 50);
     }
@@ -33,10 +31,8 @@ function QuerySelector({ queries = [], selectedQuery, onQueryChange }) {
     onQueryChange(selected);
   };
 
-  // Get the ID of the currently selected query
   const selectedId = selectedQuery?.id || '';
 
-  // Function to format execution time in a readable way
   const formatExecutionTime = (time) => {
     if (!time) return null;
     return time < 1000 ? `${time}ms` : `${(time / 1000).toFixed(1)}s`;
@@ -51,11 +47,10 @@ function QuerySelector({ queries = [], selectedQuery, onQueryChange }) {
         value={selectedId}
         onChange={handleQueryChange}
         label="Select Query"
-        displayEmpty
         renderValue={() => {
           const selected = uniqueQueries.find(q => q.id === selectedId);
           if (!selected) {
-            return <Typography color="text.secondary">Select a query</Typography>;
+            return null; // Remove the Typography component for empty state
           }
           
           return (

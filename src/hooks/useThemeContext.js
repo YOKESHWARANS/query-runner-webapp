@@ -3,9 +3,9 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+  // Change this line to default to true if no localStorage value exists
   const [darkMode, setDarkMode] = useState(
-    localStorage.getItem('darkMode') === 'true' || 
-    window.matchMedia('(prefers-color-scheme: dark)').matches
+    localStorage.getItem('darkMode') !== 'false'
   );
 
   useEffect(() => {
