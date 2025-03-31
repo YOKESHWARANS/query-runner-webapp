@@ -70,7 +70,13 @@ The application follows a **component-based architecture** built with React.js, 
 
 - **Lazy Loading** – Loads components only when needed.
 - **Memoization** – Uses `useMemo` and `useCallback` for efficiency.
-- **Error Boundaries** – Ensures stability in case of failures.
+- **Error Boundaries** – Ensures stability in case of failures.![Screenshot 2025-03-31 151514](https://github.com/user-attachments/assets/e0b492c0-cfb3-4d72-915e-e7daaa3d3941)
+![Screenshot 2025-03-31 151458](https://github.com/user-attachments/assets/faa98c42-f326-4488-8847-c932a859f112)
+![Screenshot 2025-03-31 151837](https://github.com/user-attachments/assets/c3fae2d1-3275-42cf-a31c-ce03c98271d2)
+![Perfomance Analysis UI](https://github.com/user-attachments/assets/c2098d8e-e42d-4539-be5c-4a012f3e956e)
+![Home page UI](https://github.com/user-attachments/assets/4c3f163d-0d01-41bb-80e3-590abee280d6)
+![Screenshot 2025-03-31 151746](https://github.com/user-attachments/assets/c544e151-73ab-4573-b7bd-76b05c9e5d25)
+
 - **Efficient State Management** – Reduces unnecessary computations.
 - **Lightweight Storage** – Uses Local Storage for fast performance.
 
@@ -138,3 +144,5 @@ Feel free to fork and improve this project! 😊
 [Email](mailto:wsyokesh@gmail.com)  
 [LinkedIn Profile](https://linkedin.com/in/yokeshwaran-s-38893825b/)
 
+![Screenshot 2025-03-31 154546](https://github.com/user-attachments/assets/13d3f5ec-7a01-4188-aa32-7c7094d451e0)
+![Screenshot 2025-03-31 151746](https://github.com/user-attachments/assets/38105370-e43f-4f1c-98e1-93b400099b8b)
