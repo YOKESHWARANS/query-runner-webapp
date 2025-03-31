@@ -85,7 +85,7 @@ The application follows a **component-based architecture** built with React.js, 
                                 [View Diagram](docs/system-architecture2.png)
 - **🗂️ ER Diagram:** [View ER Diagram](docs/er-diagram.png)  
                       [View ER Diagram](docs/er-diagram2.png)
-- **📄 Technical Walkthrough PDF:** [Download PDF](https://drive.google.com/file/d/12fPWgMcEdlLF-rkq8YGWopol2-0QXRaj/view?usp=sharing)  
+- **📄 Technical Walkthrough PDF:** [Download PDF](https://drive.google.com/file/d/101E_8XXED4WmrtdVmfQd-NNwIcClijfw/view?usp=sharing)  
 - **🎥 Video Walkthrough:** [Watch Video](https://drive.google.com/file/d/1gTF6YXjW7TkweK7Y1IgmDS8cQYccQ8LT/view?usp=sharing)  
 
 ---
@@ -146,8 +146,6 @@ npm start
 
 ![image](https://github.com/user-attachments/assets/8001e1d7-9189-459d-ae91-4564526674be)
 ![image](https://github.com/user-attachments/assets/068b5c2c-54f7-466c-9b3c-fc031571e059)
-
-
 
 
 
