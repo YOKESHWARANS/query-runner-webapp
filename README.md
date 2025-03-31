@@ -24,9 +24,9 @@ This project aims to bridge the gap between SQL query execution and user-friendl
 
 ✅ Execute Predefined & Custom SQL Queries  
 ✅ Interactive Data Visualization (Bar, Line, Pie, Area, and Scatter Charts)  
-✅ Query Performance Tracking  
+✅ Query Performance Tracking and Random query generating 
 ✅ Query History & CSV Export  
-✅ Theme Switching (Dark/Light Mode)  
+✅ Theme Switching (Dark/Light Mode) 
 
 ---
 
