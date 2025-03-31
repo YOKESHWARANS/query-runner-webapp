@@ -1,4 +1,4 @@
-# 🚀 SQL Query Viewer
+## 🚀 SQL Query Viewer
 
 SQL Query Viewer is a powerful web-based application designed for data analysts and developers to explore, execute, and visualize SQL queries interactively. With an intuitive UI and advanced visualization features, it enhances data exploration and performance monitoring.
 
@@ -121,20 +121,34 @@ npm start
 ---
 
 ## **USER INTERFACE**
+1.Home page
+![Screenshot 2025-03-31 160241](https://github.com/user-attachments/assets/a7e156e6-cddb-4977-a342-32d6094c9443)
 
-![Screenshot 2025-03-31 151352](https://github.com/user-attachments/assets/a9cad614-9a8b-4d42-b4fb-0c2eb8be7613)
-
+2.Perfomance Analysis
 ![Screenshot 2025-03-31 151818](https://github.com/user-attachments/assets/26bf6ae2-3c63-402c-a466-cd0b8d362c8b)
 
+3.Data Visualization
+![image](https://github.com/user-attachments/assets/e3eaed13-2eef-44b6-8bc5-ffea2c922139)
 
-![Screenshot 2025-03-31 151837](https://github.com/user-attachments/assets/7d82bc29-2c99-4b22-b08b-a5531f4c40fe)
+![image](https://github.com/user-attachments/assets/dc93ec99-e6a4-4145-a3db-f8b49970c22e)
+
+![image](https://github.com/user-attachments/assets/345dab69-1d38-4c8b-b92b-96912f32159f)
+
+![image](https://github.com/user-attachments/assets/4759faef-74e0-441d-a6c4-ed36330565b9)
+
+![image](https://github.com/user-attachments/assets/58787496-f4b7-4857-b17f-bbe17cbd9d28)
+
+![image](https://github.com/user-attachments/assets/c851e993-32c8-4c62-9c67-e4b274ca392f)
+
+![image](https://github.com/user-attachments/assets/ee620233-c6e3-4906-9d4d-0f4b81e33e62)
+
+4.Query History and SQL help
+
+![image](https://github.com/user-attachments/assets/8001e1d7-9189-459d-ae91-4564526674be)
+![image](https://github.com/user-attachments/assets/068b5c2c-54f7-466c-9b3c-fc031571e059)
 
 
-![Screenshot 2025-03-31 151458](https://github.com/user-attachments/assets/aed16d2c-0095-498a-b6db-9e1451c513e2)
 
-![Screenshot 2025-03-31 151514](https://github.com/user-attachments/assets/062b0468-f46a-4646-b690-1d0e7c519b78)
-
-![Screenshot 2025-03-31 154546](https://github.com/user-attachments/assets/23eefd57-7999-4453-b3c2-39d426fc11d3)
 
 
 ## 📈 Future Enhancements
