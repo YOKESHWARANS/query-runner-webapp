@@ -35,7 +35,7 @@ SQL Query Viewer is a powerful web-based application designed for data analysts 
 ## 📂 Project Links
 
 - **🔗 GitHub Repository:** [Repo Link](https://github.com/YOKESHWARANS/query-runner-webapp)  
-- **🌐 Live Demo:** [Deployed App](https://sql-query-viewer-mu.vercel.app/)  
+- **🌐 Live Demo:** [Deployed App](https://sql-query-vieewer-mu.vercel.app/)  
 - **📊 Architecture Diagram:** [View Diagram](docs/system-architecture1.png)  
                                 [View Diagram](docs/system-architecture2.png) 
 - **🗂️ ER Diagram:** [View ER Diagram](docs/er-diagram.png) 

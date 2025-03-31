@@ -144,14 +144,25 @@ function App() {
                 >
                   SQL Playground
                 </Typography>
-                <IconButton
-                  onClick={toggleColorMode}
-                  color="inherit"
-                  aria-label="toggle dark/light mode"
-                  edge="end"
-                >
-                  {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                </IconButton>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      mr: 1, 
+                      display: { xs: 'none', sm: 'block' } 
+                    }}
+                  >
+                    {mode === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                  </Typography>
+                  <IconButton
+                    onClick={toggleColorMode}
+                    color="inherit"
+                    aria-label="toggle dark/light mode"
+                    edge="end"
+                  >
+                    {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                  </IconButton>
+                </Box>
               </Toolbar>
             </AppBar>
             
@@ -196,20 +207,35 @@ function App() {
                   </Box>
                 </Box>
                 
-                {selectedQuery && (
-                  <>
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Query Details
-                      </Typography>
-                      <SQLSyntaxHighlighter query={selectedQuery.query} />
-                    </Box>
-                    
-                    <ResultsTable queryData={selectedQuery} />
-                    <PerformanceTracker queryData={selectedQuery} />
-                    <DataVisualization queryData={selectedQuery} />
-                  </>
-                )}
+                <>
+                  {selectedQuery ? (
+                    <>
+                      <Box sx={{ mb: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom>
+                          Query Details
+                        </Typography>
+                        <SQLSyntaxHighlighter query={selectedQuery.query} />
+                      </Box>
+                      
+                      <ResultsTable queryData={selectedQuery} isDefaultView={false} />
+                      <PerformanceTracker queryData={selectedQuery} />
+                      <DataVisualization queryData={selectedQuery} />
+                    </>
+                  ) : (
+                    // Default view when no query has been run
+                    <>
+                      <Box sx={{ mb: 2 }}>
+                        <Typography variant="subtitle1" gutterBottom>
+                          Available Tables
+                        </Typography>
+                        <Typography variant="body2">
+                          Run a query using the input above to explore the database. Below is a preview of the 'customers' table.
+                        </Typography>
+                      </Box>
+                      <ResultsTable isDefaultView={true} />
+                    </>
+                  )}
+                </>
               </Suspense>
             </Paper>
           </Box>

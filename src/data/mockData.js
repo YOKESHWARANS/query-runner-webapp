@@ -9,7 +9,8 @@ export const queryData = [
       { customer_name: 'Sundar V', total_purchases: 4200 },
       { customer_name: 'Gokula krishnan', total_purchases: 3900 },
       { customer_name: 'Tharun P', total_purchases: 3500 }
-    ]
+    ],
+    executionTime: 124
   },
   {
     id: 2,
@@ -19,7 +20,8 @@ export const queryData = [
       { product_name: 'Laptop', stock_quantity: 35, price: 999.99 },
       { product_name: 'Smartphone', stock_quantity: 22, price: 599.99 },
       { product_name: 'Tablet', stock_quantity: 45, price: 349.99 }
-    ]
+    ],
+    executionTime: 87
   },
   {
     id: 3,
@@ -30,7 +32,8 @@ export const queryData = [
       { department: 'Marketing', employee_count: 30 },
       { department: 'Engineering', employee_count: 65 },
       { department: 'HR', employee_count: 15 }
-    ]
+    ],
+    executionTime: 156
   },
   {
     id: 4,
@@ -40,6 +43,7 @@ export const queryData = [
       { order_id: 'ORD001', customer_name: 'Corporate Client A', total_amount: 1500 },
       { order_id: 'ORD002', customer_name: 'Enterprise B', total_amount: 2200 },
       { order_id: 'ORD003', customer_name: 'Large Corporation C', total_amount: 1800 }
-    ]
+    ],
+    executionTime: 92
   }
 ];
